@@ -30,6 +30,8 @@ food.color("red")
 food.penup() # does not draw anything
 food.goto(0,100)
 
+segments = []
+
 def go_up():
     head.direction = "up"
 
@@ -67,11 +69,32 @@ wn.onkeypress(go_right, "Right")
 while True:
     wn.update()
 
+    # check for a collision with the food
     if head.distance(food) < 20:
         # move the food to a random spot
         x = random.randint(-290, 290)
         y = random.randint(-290, 290)
         food.goto(x, y)
+
+        # add a segment
+        new_segment = turtle.Turtle()
+        new_segment.speed(0)
+        new_segment.shape("square")
+        new_segment.color("gray")
+        new_segment.penup()
+        segments.append(new_segment)
+
+    # move the end segment first in reverse order
+    for index in range(len(segments) - 1, 0, -1):
+        x = segments[index-1].xcor()
+        y = segments[index-1].ycor()
+        segments[index].goto(x, y)
+
+    # move segment 0 to the head is
+    if len(segments) > 0:
+        x = head.xcor()
+        y = head.ycor()
+        segments[0].goto(x, y)
 
     move()
     
