@@ -1,12 +1,15 @@
 # Simple Snake Game in Python 3
 # By Sander Ruscigno
-# Part 6: Body collisions
+# Part 7: Scoring
 
 import turtle
 import time
 import random
 
 delay = 0.1
+# Score
+score = 0
+high_score = 0
 
 # set up the screen
 wn = turtle.Screen()
@@ -33,6 +36,16 @@ food.penup() # does not draw anything
 food.goto(0,100)
 
 segments = []
+
+# Pen
+pen = turtle.Turtle()
+pen.speed(0)
+pen.shape("square")
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0,260)
+pen.write("Score: 0  High Score: 0", align="center", font=("Corier", 24, "normal"))
 
 def go_up():
     if head.direction != "down":
@@ -88,6 +101,14 @@ while True:
         # Clear the segments list
         segments.clear()
 
+        # Reset the delay
+        delay = 0.1
+
+        # Reset the score
+        score = 0
+        pen.clear()
+        pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Corier", 24, "normal"))        
+
     # check for a collision with the food
     if head.distance(food) < 20:
         # move the food to a random spot
@@ -102,6 +123,17 @@ while True:
         new_segment.color("gray")
         new_segment.penup()
         segments.append(new_segment)
+
+        # Shorten the delay
+        delay -= 0.005
+
+        # Increase the score
+        score += 10
+        if high_score < score:
+            high_score = score
+
+        pen.clear()
+        pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Corier", 24, "normal"))
 
     # move the end segment first in reverse order
     for index in range(len(segments) - 1, 0, -1):
@@ -130,6 +162,14 @@ while True:
 
             # Clear the segments list
             segments.clear()
+
+            # Reset the delay
+            delay = 0.1
+
+            # Reset the score
+            score = 0
+            pen.clear()
+            pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Corier", 24, "normal"))
     
     time.sleep(delay)
 
