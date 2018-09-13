@@ -1,5 +1,7 @@
 # Simple Snake Game in Python 3
 # By Sander Ruscigno
+# Part 5: Border Collisions
+
 import turtle
 import time
 import random
@@ -68,6 +70,19 @@ wn.onkeypress(go_right, "Right")
 # main game loop
 while True:
     wn.update()
+
+    # check for a collision with the border
+    if head.xcor()>290 or head.xcor()<-290 or head.ycor()>290 or head.ycor()<-290:
+        time.sleep(1)
+        head.goto(0,0)
+        head.direction = "stop"
+
+        # hide the segments
+        for segment in segments:
+            segment.goto(1000, 1000) #there's no way to delete a segment
+
+        # Clear the segments list
+        segments.clear()
 
     # check for a collision with the food
     if head.distance(food) < 20:
